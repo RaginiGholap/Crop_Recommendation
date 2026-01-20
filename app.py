@@ -1,22 +1,14 @@
 import streamlit as st
 import numpy as np
 import pickle
-from sklearn.preprocessing import StandardScaler, LabelEncoder  # needed for scaler and label encoder
 
-# --- LOAD PICKLE FILES ---
-try:
-    model = pickle.load(open("crop_model.pkl", "rb"))
-    scaler = pickle.load(open("scaler.pkl", "rb"))
-    label_encoder = pickle.load(open("label_encoder.pkl", "rb"))
-except FileNotFoundError as e:
-    st.error(f"File not found: {e}")
-    st.stop()
-except ModuleNotFoundError as e:
-    st.error(f"Missing library: {e}")
-    st.stop()
+# Load saved models
+model = pickle.load(open("crop_model.pkl", "rb"))
+scaler = pickle.load(open("scalar.pkl", "rb"))
+label_encoder = pickle.load(open("label_enocode.pkl", "rb"))
 
-# --- STREAMLIT UI ---
 st.title("🌾 Crop Recommendation System")
+
 st.write("Enter soil and climate details to predict the best crop")
 
 # User inputs
@@ -28,17 +20,16 @@ humidity = st.number_input("Humidity (%)")
 ph = st.number_input("pH value")
 rainfall = st.number_input("Rainfall (mm)")
 
-# Predict button
 if st.button("Predict Crop"):
     input_data = np.array([[N, P, K, temperature, humidity, ph, rainfall]])
-    
-    # Scale input
+
+    # Scale input data
     input_scaled = scaler.transform(input_data)
-    
+
     # Predict
     prediction = model.predict(input_scaled)
-    
-    # Decode label
-    crop = label_encoder.inverse_transform(prediction.ravel())
-    
+
+    # Decode prediction
+    crop = label_encoder.inverse_transform(prediction)
+
     st.success(f"🌱 Recommended Crop: **{crop[0]}**")
