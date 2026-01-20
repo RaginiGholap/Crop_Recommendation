@@ -1,12 +1,9 @@
 import streamlit as st
 import numpy as np
 import pickle
+from sklearn.preprocessing import StandardScaler, LabelEncoder  # Needed only if you use them
 
-# --- IMPORT scikit-learn classes used to train the model ---
-from sklearn.ensemble import RandomForestClassifier  # replace with your model class if different
-from sklearn.preprocessing import StandardScaler, LabelEncoder
-
-# --- LOAD saved files safely ---
+# Load saved files
 try:
     model = pickle.load(open("crop_model.pkl", "rb"))
     scaler = pickle.load(open("scaler.pkl", "rb"))
@@ -18,7 +15,7 @@ except ModuleNotFoundError as e:
     st.error(f"Missing library: {e}")
     st.stop()
 
-# --- STREAMLIT UI ---
+# Streamlit UI
 st.title("🌾 Crop Recommendation System")
 st.write("Enter soil and climate details to predict the best crop")
 
