@@ -1,9 +1,9 @@
 import streamlit as st
 import numpy as np
 import pickle
-from sklearn.preprocessing import StandardScaler, LabelEncoder  # Needed only if you use them
+from sklearn.preprocessing import StandardScaler, LabelEncoder  # needed for scaler and label encoder
 
-# Load saved files
+# --- LOAD PICKLE FILES ---
 try:
     model = pickle.load(open("crop_model.pkl", "rb"))
     scaler = pickle.load(open("scaler.pkl", "rb"))
@@ -15,7 +15,7 @@ except ModuleNotFoundError as e:
     st.error(f"Missing library: {e}")
     st.stop()
 
-# Streamlit UI
+# --- STREAMLIT UI ---
 st.title("🌾 Crop Recommendation System")
 st.write("Enter soil and climate details to predict the best crop")
 
@@ -28,6 +28,7 @@ humidity = st.number_input("Humidity (%)")
 ph = st.number_input("pH value")
 rainfall = st.number_input("Rainfall (mm)")
 
+# Predict button
 if st.button("Predict Crop"):
     input_data = np.array([[N, P, K, temperature, humidity, ph, rainfall]])
     
