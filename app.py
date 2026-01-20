@@ -1,7 +1,7 @@
 import streamlit as st
 import numpy as np
 import pickle
-from sklearn.preprocessing import StandardScaler, LabelEncoder  # needed for scaler and label encoder
+  
 
 # --- LOAD PICKLE FILES ---
 try:
@@ -42,3 +42,4 @@ if st.button("Predict Crop"):
     crop = label_encoder.inverse_transform(prediction.ravel())
     
     st.success(f"🌱 Recommended Crop: **{crop[0]}**")
+
