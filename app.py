@@ -11,7 +11,7 @@ st.write("Enter soil and climate parameters to get crop recommendations.")
 # -----------------------------
 # 1️⃣ Check if all required files exist
 # -----------------------------
-required_files = ["crop_model.pkl", "scalar.pkl", "label_encoder.pkl"]
+required_files = ["crop_model.pkl", "scalar.pkl", "label_enocode.pkl"]
 
 for file in required_files:
     if not os.path.exists(file):
@@ -60,3 +60,4 @@ if st.button("Recommend Crop"):
 
     except Exception as e:
         st.error(f"⚠️ Something went wrong during prediction: {e}")
+
