@@ -4,8 +4,9 @@ import pickle
 
 # Load saved models
 crop_model = pickle.load(open("crop_model.pkl", "rb"))
-scaler = pickle.load(open("scaler.pkl", "rb"))
-label_encoder = pickle.load(open("label_encoder.pkl", "rb"))
+scaler = pickle.load(open("scalar.pkl", "rb"))
+label_encoder = pickle.load(open("label_enocode.pkl", "rb"))
+
 
 st.title("🌾 Crop Recommendation System")
 
@@ -33,4 +34,5 @@ if st.button("Predict Crop"):
     crop = label_encoder.inverse_transform(prediction)
 
     st.success(f"🌱 Recommended Crop: **{crop[0]}**")
+
 
