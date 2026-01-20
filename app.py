@@ -2,13 +2,24 @@ import streamlit as st
 import numpy as np
 import pickle
 
-# Load saved files
-model = pickle.load(open("crop_model.pkl", "rb"))
-scaler = pickle.load(open("scaler.pkl", "rb"))
-label_encoder = pickle.load(open("label_encoder.pkl", "rb"))
+# --- IMPORT scikit-learn classes used to train the model ---
+from sklearn.ensemble import RandomForestClassifier  # replace with your model class if different
+from sklearn.preprocessing import StandardScaler, LabelEncoder
 
+# --- LOAD saved files safely ---
+try:
+    model = pickle.load(open("crop_model.pkl", "rb"))
+    scaler = pickle.load(open("scaler.pkl", "rb"))
+    label_encoder = pickle.load(open("label_encoder.pkl", "rb"))
+except FileNotFoundError as e:
+    st.error(f"File not found: {e}")
+    st.stop()
+except ModuleNotFoundError as e:
+    st.error(f"Missing library: {e}")
+    st.stop()
+
+# --- STREAMLIT UI ---
 st.title("🌾 Crop Recommendation System")
-
 st.write("Enter soil and climate details to predict the best crop")
 
 # User inputs
@@ -30,6 +41,6 @@ if st.button("Predict Crop"):
     prediction = model.predict(input_scaled)
     
     # Decode label
-    crop = label_encoder.inverse_transform(prediction)
+    crop = label_encoder.inverse_transform(prediction.ravel())
     
     st.success(f"🌱 Recommended Crop: **{crop[0]}**")
